@@ -10,7 +10,7 @@ import tool_realsense as tr
 
 # Parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--name', help='name of save dir')
+parser.add_argument('--name', help='name of save dir (optiional)')
 args = parser.parse_args()
 
 # Save dir
@@ -23,7 +23,7 @@ save_depth = dir_save + cf.save_depth
 os.makedirs(dir_save, exist_ok=True)
 
 
-# Configure depth and color streams
+# Configure depth and color streams of 3 cameras
 # Camera 1
 pipeline_1 = rs.pipeline()
 config_1 = rs.config()
@@ -110,7 +110,7 @@ try:
         # Save images and depth maps from selected camera by pressing camera number
         ch = cv2.waitKey(25)
         if ch == ord('1'):
-            cv2.imwrite(save_image.format(ch, idx1),color_image_1)
+            cv2.imwrite(save_image.format(ch, idx1), color_image_1)
             cv2.imwrite(save_depth.format(ch, idx1), depth_colormap_1)
             idx1 += 1
             print('Save camera-{}'.format(ch))
