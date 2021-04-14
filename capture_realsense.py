@@ -52,7 +52,7 @@ if is_camera_1:
     pipeline_1.start(config_1)
 if is_camera_2:
     pipeline_2.start(config_2)
-if is_camera_2:
+if is_camera_3:
     pipeline_3.start(config_3)
 
 # Capture index
