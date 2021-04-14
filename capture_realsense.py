@@ -22,6 +22,9 @@ save_image = dir_save + cf.save_image
 save_depth = dir_save + cf.save_depth
 os.makedirs(dir_save, exist_ok=True)
 
+# Reset USB Connection
+tr.reset_usb()
+
 is_camera_1 = True
 is_camera_2 = True
 is_camera_3 = False
@@ -32,19 +35,19 @@ pipeline_1 = rs.pipeline()
 config_1 = rs.config()
 config_1.enable_device(cf.CAMERA_1)
 config_1.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
-config_1.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8,cf.CAPTURE_FPS)
+config_1.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8, cf.CAPTURE_FPS)
 # Camera 2
 pipeline_2 = rs.pipeline()
 config_2 = rs.config()
 config_2.enable_device(cf.CAMERA_2)
 config_2.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
-config_2.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8,cf.CAPTURE_FPS)
+config_2.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8, cf.CAPTURE_FPS)
 # Camera 3
 pipeline_3 = rs.pipeline()
 config_3 = rs.config()
 config_3.enable_device(cf.CAMERA_3)
 config_3.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
-config_3.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8,cf.CAPTURE_FPS)
+config_3.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8, cf.CAPTURE_FPS)
 
 
 # Start streaming from multi-cameras
@@ -59,9 +62,6 @@ if is_camera_3:
 idx1 = 0
 idx2 = 0
 idx3 = 0
-
-# Reset USB Connection
-tr.reset_usb()
 
 try:
     while True:
