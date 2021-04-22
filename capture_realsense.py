@@ -145,8 +145,9 @@ try:
             cv2.imwrite(save_image.format(3, idx3), color_image_3)
             # cv2.imwrite(save_depth.format(ch, idx3), depth_colormap_3)
             idx3 += 1
-            print('Save camera-1 frame:{}'.format(idx3))
-
+            print('Save camera-3 frame:{}'.format(idx3))
+        elif ch == 27:
+            break
 
 finally:
     # Stop streaming
