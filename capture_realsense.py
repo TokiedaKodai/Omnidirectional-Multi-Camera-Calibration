@@ -27,7 +27,7 @@ tr.reset_usb()
 
 is_camera_1 = True
 is_camera_2 = True
-is_camera_3 = False
+is_camera_3 = True
 
 # Configure depth and color streams of 3 cameras
 # Camera 1
@@ -40,13 +40,13 @@ config_1.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.
 pipeline_2 = rs.pipeline()
 config_2 = rs.config()
 config_2.enable_device(cf.CAMERA_2)
-config_2.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
+# config_2.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
 config_2.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8, cf.CAPTURE_FPS)
 # Camera 3
 pipeline_3 = rs.pipeline()
 config_3 = rs.config()
 config_3.enable_device(cf.CAMERA_3)
-config_3.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
+# config_3.enable_stream(rs.stream.depth, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.z16, cf.CAPTURE_FPS)
 config_3.enable_stream(rs.stream.color, cf.CAPTURE_WIDTH, cf.CAPTURE_HEIGHT, rs.format.bgr8, cf.CAPTURE_FPS)
 
 
@@ -71,41 +71,44 @@ try:
             frames_1 = pipeline_1.wait_for_frames()
             # depth_frame_1 = frames_1.get_depth_frame()
             color_frame_1 = frames_1.get_color_frame()
-            if not depth_frame_1 or not color_frame_1:
+            # if not depth_frame_1 or not color_frame_1:
+            if not color_frame_1:
                 continue
             # Convert images to numpy arrays
-            depth_image_1 = np.asanyarray(depth_frame_1.get_data())
+            # depth_image_1 = np.asanyarray(depth_frame_1.get_data())
             color_image_1 = np.asanyarray(color_frame_1.get_data())
             # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-            depth_colormap_1 = cv2.applyColorMap(cv2.convertScaleAbs(depth_image_1, alpha=0.5), cv2.COLORMAP_JET)
+            # depth_colormap_1 = cv2.applyColorMap(cv2.convertScaleAbs(depth_image_1, alpha=0.5), cv2.COLORMAP_JET)
 
         #### Camera 2
         if is_camera_2:
             # Wait for a coherent pair of frames: depth and color
             frames_2 = pipeline_2.wait_for_frames()
-            depth_frame_2 = frames_2.get_depth_frame()
+            # depth_frame_2 = frames_2.get_depth_frame()
             color_frame_2 = frames_2.get_color_frame()
-            if not depth_frame_2 or not color_frame_2:
+            # if not depth_frame_2 or not color_frame_2:
+            if not color_frame_2:
                 continue
             # Convert images to numpy arrays
-            depth_image_2 = np.asanyarray(depth_frame_2.get_data())
+            # depth_image_2 = np.asanyarray(depth_frame_2.get_data())
             color_image_2 = np.asanyarray(color_frame_2.get_data())
             # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-            depth_colormap_2 = cv2.applyColorMap(cv2.convertScaleAbs(depth_image_2, alpha=0.5), cv2.COLORMAP_JET)
+            # depth_colormap_2 = cv2.applyColorMap(cv2.convertScaleAbs(depth_image_2, alpha=0.5), cv2.COLORMAP_JET)
 
         #### Camera 3
         if is_camera_3:
             # Wait for a coherent pair of frames: depth and color
             frames_3 = pipeline_3.wait_for_frames()
-            depth_frame_3 = frames_3.get_depth_frame()
+            # depth_frame_3 = frames_3.get_depth_frame()
             color_frame_3 = frames_3.get_color_frame()
-            if not depth_frame_3 or not color_frame_3:
+            # if not depth_frame_3 or not color_frame_3:
+            if not color_frame_3:
                 continue
             # Convert images to numpy arrays
-            depth_image_3 = np.asanyarray(depth_frame_3.get_data())
+            # depth_image_3 = np.asanyarray(depth_frame_3.get_data())
             color_image_3 = np.asanyarray(color_frame_3.get_data())
             # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-            depth_colormap_3 = cv2.applyColorMap(cv2.convertScaleAbs(depth_image_3, alpha=0.5), cv2.COLORMAP_JET)
+            # depth_colormap_3 = cv2.applyColorMap(cv2.convertScaleAbs(depth_image_3, alpha=0.5), cv2.COLORMAP_JET)
 
 
         # Stack all images horizontally
@@ -114,9 +117,11 @@ try:
             # list_stack.append(color_image_1, depth_colormap_1)
             list_stack.append(color_image_1)
         if is_camera_2:
-            list_stack.append(color_image_2, depth_colormap_2)
+            # list_stack.append(color_image_2, depth_colormap_2)
+            list_stack.append(color_image_2)
         if is_camera_2:
-            list_stack.append(color_image_3, depth_colormap_3)
+            # list_stack.append(color_image_3, depth_colormap_3)
+            list_stack.append(color_image_3)
         images = np.hstack(list_stack)
 
         # Show images from both cameras
@@ -133,12 +138,12 @@ try:
             print('Save camera-{}'.format(ch))
         elif ch == ord('2') and is_camera_2:
             cv2.imwrite(save_image.format(ch, idx2), color_image_2)
-            cv2.imwrite(save_depth.format(ch, idx2), depth_colormap_2)
+            # cv2.imwrite(save_depth.format(ch, idx2), depth_colormap_2)
             idx2 += 1
             print('Save camera-{}'.format(ch))
         elif ch == ord('3') and is_camera_3:
             cv2.imwrite(save_image.format(ch, idx3), color_image_3)
-            cv2.imwrite(save_depth.format(ch, idx3), depth_colormap_3)
+            # cv2.imwrite(save_depth.format(ch, idx3), depth_colormap_3)
             idx3 += 1
             print('Save camera-{}'.format(ch))
 
