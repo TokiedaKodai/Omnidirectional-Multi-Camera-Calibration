@@ -132,20 +132,20 @@ try:
         # Save images and depth maps from selected camera by pressing camera number
         ch = cv2.waitKey(25)
         if ch == ord('1') and is_camera_1:
-            cv2.imwrite(save_image.format(ch, idx1), color_image_1)
+            cv2.imwrite(save_image.format(1, idx1), color_image_1)
             # cv2.imwrite(save_depth.format(ch, idx1), depth_colormap_1)
             idx1 += 1
-            print('Save camera-{}'.format(ch))
+            print('Save camera-1 frame:{}'.format(idx1))
         elif ch == ord('2') and is_camera_2:
-            cv2.imwrite(save_image.format(ch, idx2), color_image_2)
+            cv2.imwrite(save_image.format(2, idx2), color_image_2)
             # cv2.imwrite(save_depth.format(ch, idx2), depth_colormap_2)
             idx2 += 1
-            print('Save camera-{}'.format(ch))
+            print('Save camera-2 frame:{}'.format(idx2))
         elif ch == ord('3') and is_camera_3:
-            cv2.imwrite(save_image.format(ch, idx3), color_image_3)
+            cv2.imwrite(save_image.format(3, idx3), color_image_3)
             # cv2.imwrite(save_depth.format(ch, idx3), depth_colormap_3)
             idx3 += 1
-            print('Save camera-{}'.format(ch))
+            print('Save camera-1 frame:{}'.format(idx3))
 
 
 finally:
