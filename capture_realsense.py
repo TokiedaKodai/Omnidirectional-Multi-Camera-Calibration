@@ -119,7 +119,7 @@ try:
         if is_camera_2:
             # list_stack.append(color_image_2, depth_colormap_2)
             list_stack.append(color_image_2)
-        if is_camera_2:
+        if is_camera_3:
             # list_stack.append(color_image_3, depth_colormap_3)
             list_stack.append(color_image_3)
         images = np.hstack(list_stack)
