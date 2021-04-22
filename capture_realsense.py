@@ -146,14 +146,17 @@ try:
             # cv2.imwrite(save_depth.format(ch, idx3), depth_colormap_3)
             idx3 += 1
             print('Save camera-3 frame:{}'.format(idx3))
-        elif ch == ord('s') and is_camera_1:
-            cv2.imwrite(save_image.format(1, idx1), color_image_1)
-            cv2.imwrite(save_image.format(2, idx2), color_image_2)
-            cv2.imwrite(save_image.format(3, idx3), color_image_3)
-            idx1 += 1
-            idx2 += 1
-            idx3 += 1
-            print('Save all cameras frame:{},{},{}'.format(idx1, idx2, idx3))
+        elif ch == ord('s'):
+            if is_camera_1:
+                cv2.imwrite(save_image.format(1, idx1), color_image_1)
+                idx1 += 1
+            if is_camera_2:
+                cv2.imwrite(save_image.format(2, idx2), color_image_2)
+                idx2 += 1
+            if is_camera_3:
+                cv2.imwrite(save_image.format(3, idx3), color_image_3)
+                idx3 += 1
+            print('Save all cameras')
         elif ch == 27:
             break
 
