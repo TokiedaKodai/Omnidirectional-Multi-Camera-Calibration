@@ -31,11 +31,11 @@ os.makedirs(dir_save, exist_ok=True)
 
 
 if camera_no == 1:
-    CAMERA = CAMERA_1
+    CAMERA = cf.CAMERA_1
 elif camera_no == 2:
-    CAMERA = CAMERA_2
+    CAMERA = cf.CAMERA_2
 elif camera_no == 3:
-    CAMERA = CAMERA_2
+    CAMERA = cf.CAMERA_3
 
 
 # Reset USB Connection
