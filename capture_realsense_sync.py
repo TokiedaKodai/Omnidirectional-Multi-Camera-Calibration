@@ -57,7 +57,7 @@ try:
     while True:
         # Wait for frames
         frames = pipeline.wait_for_frames()
-	color_frame = frames.get_color_frame()
+        color_frame = frames.get_color_frame()
         if is_depth:
             depth_frame = frames.get_depth_frame()
         
