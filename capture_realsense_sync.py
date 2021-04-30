@@ -66,17 +66,17 @@ try:
 
         # Convert images to numpy arrays
         color_image = np.asanyarray(color_frame.get_data())
-	if is_depth:
-	    depth_image = np.asanyarray(depth_frame.get_data())
+        if is_depth:
+        depth_image = np.asanyarray(depth_frame.get_data())
             # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
             depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.5), cv2.COLORMAP_JET)
 
-	# Save
-	cv2.imwrite(save_image.format(camera_no, idx), color_image)
-	if is_depth:
-	    cv2.imwrite(save_depth.format(camera_no, idx), depth_colormap)
+        # Save
+        cv2.imwrite(save_image.format(camera_no, idx), color_image)
+        if is_depth:
+            cv2.imwrite(save_depth.format(camera_no, idx), depth_colormap)
 	
-	break
+        break
 
 finally:
     # Stop streaming
