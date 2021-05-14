@@ -19,11 +19,10 @@ dir_root = cf.dir_save + args.name + '/'
 dir_realsense = dir_root + cf.dir_realsense
 dir_kinect = dir_root + cf.dir_kinect
 dir_calib = dir_root + cf.dir_calib
+dir_detect_marker = dir_root + cf.dir_detect_marker
 
 file_img = cf.save_image
 num = cf.num_capture
-
-os.makedirs(dir_calib, exist_ok=True)
 
 # def readStereoImages(capture):
 #     images_1 = []
@@ -97,14 +96,17 @@ def getValidStereoImages(images_1, images_2, index):
 
 
 def main():
-    ar = charuco.Arco()
+    os.makedirs(dir_calib, exist_ok=True)
+    os.makedirs(dir_detect_marker, exist_ok=True)
+    
+    ar = charuco.Aruco()
 
     for cap in [1, 2]:
         for j in range(2):
             twice_stereo = readStereoImagesTwice(cap)
             
             images_1,images_2,files_1,files_2 = twice_stereo[j]
-            allCorners_1,allCorners_2,allIds_1,allIds_2,imsize,index = ar.read_chessboards_stereo(
+            allCorners_1,allCorners_2,allIds_1,allIds_2,imsize_1,imsize_2,objPoints,index = ar.read_chessboards_stereo(
                 images_1,images_2,files_1,files_2
             )
             valid_img_1, valid_img_2 = getValidStereoImages(images_1, images_2, index)
@@ -115,6 +117,10 @@ def main():
                 cv2.imwrite(dir_calib + 'r_%d-%d_%d.png'%(cap, j, i), img)
             for i, img in enumerate(draw_img_2):
                 cv2.imwrite(dir_calib + 'k_%d-%d_%d.png'%(cap, j, i), img)
+
+            R, T, E, F = ar.calibrate_camera_stereo(allCorners_1, allCorners_2, allIds_1, allIds_2, objPoints, imsize_1, imsize_2)
+            print('R={}\nT={}\nE={}\nF={}'.format(R, T, E, F))
+
 
     # images_1,images_2,files_1,files_2 = readStereoImages(2)
     # for i, img in enumerate(images_1):

@@ -11,25 +11,22 @@ CAMERA_1 = '816612061596'
 CAMERA_2 = '821212060533'
 CAMERA_3 = '816612061727'
 
-#### Capture Setting
+#### Calibration
+num_marker_x = 10
+num_marker_y = 7
+res_board_x = 1000
+res_board_y = 700
+marker_real_size = 20 # [mm]
 
+#### Capture Setting
 # Capture order and camera number for stereo capture
-cap_1 = {
-    'dir': 'cap1/',
-    'cams': [1, 2]
-}
-cap_2 = {
-    'dir': 'cap2/',
-    'cams': [2, 3]
-}
-cap_3 = {
-    'dir': 'cap3/',
-    'cams': [3, 1]
-}
 capture_stereo = { 
-    1: cap_1,
-    2: cap_2,
-    3: cap_3
+    1: {'dir': 'cap1/',
+        'cams': [1, 2]},
+    2: {'dir': 'cap2/',
+        'cams': [2, 3]},
+    3: {'dir': 'cap3/',
+        'cams': [3, 1]}
 }
 num_capture = 10
 
@@ -38,8 +35,7 @@ dir_save = '../captures/'
 dir_realsense = 'realsense/'
 dir_kinect = 'kinect/'
 dir_calib = 'calib/'
-dir_cap_1 = 'cap1/'
-dir_cap_2 = 'cap2/'
+dir_detect_marker = dir_calib + 'detect/'
 
 save_image = 'image_{}-{}.png'
 save_depth = 'depth_{}-{}.png'
