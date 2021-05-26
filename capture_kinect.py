@@ -6,6 +6,7 @@ import argparse
 from freenect2 import Device, FrameType
 
 import config as cf
+import depth_tools as dt
 
 # Parser
 parser = argparse.ArgumentParser()
@@ -25,6 +26,12 @@ save_image = dir_save + cf.save_kinect_img
 save_depth = dir_save + cf.save_kinect_depth
 os.makedirs(dir_save, exist_ok=True)
 
+def save_images(cam, idx, rgb, depth=None):
+    cv2.imwrite(save_image.format(cam, idx), rgb.to_array())
+    if depth is not None:
+        depth_image = dt.pack_float_to_bmp_bgra(depth.to_array())
+        cv2.imwrite(save_depth.format(cam, idx), depth_image)
+
 # Capture index
 idx1 = 0
 idx2 = 0
@@ -32,6 +39,8 @@ idx3 = 0
 
 # Get Kinect
 device = Device()
+
+depth = None
 
 try:
     while True:
@@ -57,21 +66,15 @@ try:
 	# Save images and depth maps from selected camera by pressing camera number
         ch = cv2.waitKey(25)
         if ch == ord('1'):
-            cv2.imwrite(save_image.format(1, idx1), rgb.to_array())
-            if is_depth:
-                cv2.imwrite(save_depth.format(1, idx1), depth.to_array())
+            save_images(1, idx1, rgb, depth)
             idx1 += 1
             print('Save camera-1 frame:{}'.format(idx1))
         elif ch == ord('2'):
-            cv2.imwrite(save_image.format(2, idx2), rgb.to_array())
-            if is_depth:
-                cv2.imwrite(save_depth.format(2, idx2), depth.to_array())
+            save_images(2, idx2, rgb, depth)
             idx2 += 1
             print('Save camera-2 frame:{}'.format(idx2))
         elif ch == ord('3'):
-            cv2.imwrite(save_image.format(3, idx3), rgb.to_array())
-            if is_depth:
-                cv2.imwrite(save_depth.format(3, idx3), depth.to_array())
+            save_images(3, idx3, rgb, depth)
             idx3 += 1
             print('Save camera-3 frame:{}'.format(idx3))
         elif ch == 27:
