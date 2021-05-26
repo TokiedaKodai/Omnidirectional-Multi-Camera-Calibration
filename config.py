@@ -38,4 +38,4 @@ dir_calib = 'calib/'
 dir_detect_marker = dir_calib + 'detect/'
 
 save_image = 'image_{}-{}.png'
-save_depth = 'depth_{}-{}.png'
+save_depth = 'depth_{}-{}.bmp'
