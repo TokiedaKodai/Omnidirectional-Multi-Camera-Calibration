@@ -246,7 +246,7 @@ class Aruco:
 
     # Calibration STEREO
     def calibrate_camera_stereo(self, allCorners_1, allCorners_2, allIds_1, allIds_2, objPoints, imsize_1, imsize_2):
-        """
+        """ 
         Calibrates the camera using the dected corners.
         """
         print("CAMERA CALIBRATION STEREO")
@@ -266,6 +266,13 @@ class Aruco:
         err, KK_1, distCoeffs_1, KK_2, distCoeffs_2, R, T, E, F = res
         print('Error = {}'.format(err))
         return R, T, E, F
+
+    def undist_images(self, images, mtx, dist):
+        undist_images = []
+        for img in images:
+            img_undist = cv2.undistort(img,mtx,dist,None)
+            undist_images.append(img_undist)
+        return undist_images
 
 
 if __name__ == '__main__':
