@@ -10,7 +10,7 @@ import depth_tools as dt
 
 # Parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--name', help='name of save dir (optiional)')
+parser.add_argument('--name', help='name of save dir (optional)')
 parser.add_argument('--depth', action='store_true', help='add to save depth image')
 args = parser.parse_args()
 
