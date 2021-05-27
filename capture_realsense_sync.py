@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 import os
 import argparse
+import glob
 
 import config as cf
 import tool_realsense as tr
@@ -12,13 +13,13 @@ import depth_tools as dt
 # Parser
 parser = argparse.ArgumentParser()
 parser.add_argument('cam', type=int, help='camera number')
-parser.add_argument('idx', type=int, help='capture index')
-parser.add_argument('--name', help='name of save dir (optiional)')
+#parser.add_argument('idx', type=int, help='capture index')
+parser.add_argument('--name', help='name of save dir (optional)')
 parser.add_argument('--depth', action='store_true', help='add to save depth image')
 args = parser.parse_args()
 
 camera_no = args.cam
-idx = args.idx
+#idx = args.idx
 dir_name = args.name
 is_depth = args.depth
 
@@ -43,6 +44,9 @@ def save_images(cam, idx, rgb, depth=None):
     if depth is not None:
         depth_image = dt.pack_float_to_bmp_bgra(depth)
         cv2.imwrite(save_depth.format(cam, idx), depth_image)
+
+saved_files = glob.glob(dir_save + '*.png')
+idx = len(saved_files)
 
 # Reset USB Connection
 tr.reset_usb()
