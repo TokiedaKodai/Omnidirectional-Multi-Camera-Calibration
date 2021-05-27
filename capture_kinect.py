@@ -27,9 +27,9 @@ save_depth = dir_save + cf.save_depth
 os.makedirs(dir_save, exist_ok=True)
 
 def save_images(cam, idx, rgb, depth=None):
-    cv2.imwrite(save_image.format(cam, idx), rgb.to_array())
+    cv2.imwrite(save_image.format(cam, idx), rgb)
     if depth is not None:
-        depth_image = dt.pack_float_to_bmp_bgra(depth.to_array())
+        depth_image = dt.pack_float_to_bmp_bgra(depth)
         cv2.imwrite(save_depth.format(cam, idx), depth_image)
 
 # Capture index
