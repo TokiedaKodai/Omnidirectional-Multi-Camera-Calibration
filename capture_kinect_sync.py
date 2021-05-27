@@ -25,8 +25,8 @@ is_depth = args.depth
 dir_save = cf.dir_save
 if not dir_name is None:
     dir_save += dir_name + '/'
-save_image = dir_save + cf.save_kinect_img
-save_depth = dir_save + cf.save_kinect_depth
+save_image = dir_save + cf.save_image
+save_depth = dir_save + cf.save_depth
 os.makedirs(dir_save, exist_ok=True)
 
 def save_images(cam, idx, rgb, depth=None):
@@ -56,8 +56,8 @@ try:
 
 	    # Stack all images horizontally
         list_stack = [rgb]
-        if is_depth:
-            list_stack.append([depth, depth, depth])
+        # if is_depth:
+        #     list_stack.append([depth, depth, depth])
         images = np.hstack(list_stack)
 	    # Show images from both cameras
         cv2.namedWindow('Kinect', cv2.WINDOW_NORMAL)
