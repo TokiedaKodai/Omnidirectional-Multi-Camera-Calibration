@@ -12,6 +12,7 @@ import tool_realsense as tr
 parser = argparse.ArgumentParser()
 parser.add_argument('--name', help='name of save dir (optional)')
 parser.add_argument('--depth', action='store_true', help='add to save depth image')
+parser.add_argument('--cams', help='camera numbers. to use camera 1 and 2, write: 12')
 args = parser.parse_args()
 
 # Save dir
@@ -29,9 +30,18 @@ os.makedirs(dir_save, exist_ok=True)
 # Reset USB Connection
 tr.reset_usb()
 
-is_camera_1 = True
-is_camera_2 = True
-is_camera_3 = True
+camera_list = list(args.cams)
+
+is_camera_1 = False
+is_camera_2 = False
+is_camera_3 = False
+
+if '1' in camera_list:
+    is_camera_1 = True
+if '2' in camera_list:
+    is_camera_2 = True
+if '3' in camera_list:
+    is_camera_3 = True
 
 # Configure depth and color streams of 3 cameras
 # Camera 1
@@ -135,15 +145,15 @@ try:
         if is_camera_1:
             list_stack.append(color_image_1)
             if is_depth:
-                list_stack.append(color_image_1, depth_colormap_1)
+                list_stack.append(depth_colormap_1)
         if is_camera_2:
             list_stack.append(color_image_2)
             if is_depth:
-                list_stack.append(color_image_2, depth_colormap_2)
+                list_stack.append(depth_colormap_2)
         if is_camera_3:
             list_stack.append(color_image_3)
             if is_depth:
-                list_stack.append(color_image_3, depth_colormap_3)
+                list_stack.append(depth_colormap_3)
         images = np.hstack(list_stack)
 
         # Show images from both cameras

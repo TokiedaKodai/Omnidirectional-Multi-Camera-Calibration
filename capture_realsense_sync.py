@@ -4,20 +4,22 @@ import numpy as np
 import cv2
 import os
 import argparse
+import glob
 
 import config as cf
 import tool_realsense as tr
+import depth_tools as dt
 
 # Parser
 parser = argparse.ArgumentParser()
 parser.add_argument('cam', type=int, help='camera number')
-parser.add_argument('idx', type=int, help='capture index')
-parser.add_argument('--name', help='name of save dir (optiional)')
+#parser.add_argument('idx', type=int, help='capture index')
+parser.add_argument('--name', help='name of save dir (optional)')
 parser.add_argument('--depth', action='store_true', help='add to save depth image')
 args = parser.parse_args()
 
 camera_no = args.cam
-idx = args.idx
+#idx = args.idx
 dir_name = args.name
 is_depth = args.depth
 
@@ -37,6 +39,14 @@ elif camera_no == 2:
 elif camera_no == 3:
     CAMERA = cf.CAMERA_3
 
+def save_images(cam, idx, rgb, depth=None):
+    cv2.imwrite(save_image.format(cam, idx), rgb)
+    if depth is not None:
+        depth_image = dt.pack_float_to_bmp_bgra(depth)
+        cv2.imwrite(save_depth.format(cam, idx), depth_image)
+
+saved_files = glob.glob(dir_save + '*.png')
+idx = len(saved_files)
 
 # Reset USB Connection
 tr.reset_usb()
@@ -53,6 +63,8 @@ if is_depth:
 # Start streaming from both cameras
 pipeline.start(config)
 
+depth = None
+
 try:
     while True:
         # Wait for frames
@@ -67,15 +79,13 @@ try:
         # Convert images to numpy arrays
         color_image = np.asanyarray(color_frame.get_data())
         if is_depth:
-            depth_image = np.asanyarray(depth_frame.get_data())
+            depth = np.asanyarray(depth_frame.get_data())
             # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-            depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.5), cv2.COLORMAP_JET)
+            depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth, alpha=0.5), cv2.COLORMAP_JET)
 
         # Save
-        cv2.imwrite(save_image.format(camera_no, idx), color_image)
-        if is_depth:
-            cv2.imwrite(save_depth.format(camera_no, idx), depth_colormap)
-	
+        save_images(camera_no, idx, color_image, depth)
+
         break
 
 finally:
