@@ -14,8 +14,9 @@ CAMERA_3 = '816612061727'
 #### Calibration
 num_marker_x = 10
 num_marker_y = 7
-res_board_x = 1000
-res_board_y = 700
+res_board_scale = 150
+res_board_x = num_marker_x * res_board_scale
+res_board_y = num_marker_y * res_board_scale
 marker_real_size = 20 # [mm]
 
 #### Capture Setting

@@ -271,4 +271,4 @@ class Aruco:
 if __name__ == '__main__':
     ar = Aruco()
     img_board = ar.img_aruco()
-    cv2.imwrite('ARMarkerBoard.png', img_board)
+    cv2.imwrite('ARMarkerBoard_1500.png', img_board)
