@@ -59,7 +59,7 @@ try:
     ply.set_option(rs.save_to_ply.option_ply_binary, False)
     ply.set_option(rs.save_to_ply.option_ply_normals, False)
 
-    print("Saving ply...")
+    print("Saving to ply...")
     # Apply the processing block to the frameset which contains the depth frame and the texture
     ply.process(colorized)
     print("Done")
