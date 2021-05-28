@@ -41,3 +41,4 @@ dir_undist = 'undist/'
 
 save_image = 'image_{}-{}.png'
 save_depth = 'depth_{}-{}.bmp'
+save_ply = 'ply_{}-{}.ply'
