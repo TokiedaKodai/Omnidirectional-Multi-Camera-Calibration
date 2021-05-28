@@ -18,7 +18,6 @@ args = parser.parse_args()
 camera_no = args.cam
 idx = args.idx
 dir_name = args.name
-is_depth = args.depth
 
 # Save dir
 dir_save = cf.dir_save
@@ -49,7 +48,7 @@ colorizer = rs.colorizer()
 
 try:
     # Wait for the next set of frames from the camera
-    frames = pipe.wait_for_frames()
+    frames = pipeline.wait_for_frames()
     colorized = colorizer.process(frames)
 
     # Create save_to_ply object
@@ -58,11 +57,11 @@ try:
     # Set options to the desired values
     # In this example we'll generate a textual PLY with normals (mesh is already created by default)
     ply.set_option(rs.save_to_ply.option_ply_binary, False)
-    ply.set_option(rs.save_to_ply.option_ply_normals, True)
+    ply.set_option(rs.save_to_ply.option_ply_normals, False)
 
-    print("Saving to 1.ply...")
+    print("Saving ply...")
     # Apply the processing block to the frameset which contains the depth frame and the texture
     ply.process(colorized)
     print("Done")
 finally:
-    pipe.stop()
+    pipeline.stop()
