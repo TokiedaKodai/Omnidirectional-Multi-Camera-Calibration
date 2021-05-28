@@ -27,6 +27,12 @@ save_image = dir_save + cf.save_image
 save_depth = dir_save + cf.save_depth
 os.makedirs(dir_save, exist_ok=True)
 
+def save_images(cam, idx, rgb, depth=None):
+    cv2.imwrite(save_image.format(cam, idx), rgb)
+    if depth is not None:
+        depth_image = dt.pack_float_to_bmp_bgra(depth)
+        cv2.imwrite(save_depth.format(cam, idx), depth_image)
+
 # Reset USB Connection
 tr.reset_usb()
 
@@ -79,6 +85,10 @@ if is_camera_3:
 idx1 = 0
 idx2 = 0
 idx3 = 0
+
+depth_image_1 = None
+depth_image_2 = None
+depth_image_3 = None
 
 try:
     while True:
@@ -164,38 +174,26 @@ try:
         # Save images and depth maps from selected camera by pressing camera number
         ch = cv2.waitKey(25)
         if ch == ord('1') and is_camera_1:
-            cv2.imwrite(save_image.format(1, idx1), color_image_1)
-            if is_depth:
-                cv2.imwrite(save_depth.format(ch, idx1), depth_image_1)
-            idx1 += 1
+            save_images(ch, idx1, color_image_1, depth_image_1)
             print('Save camera-1 frame:{}'.format(idx1))
+            idx1 += 1
         elif ch == ord('2') and is_camera_2:
-            cv2.imwrite(save_image.format(2, idx2), color_image_2)
-            if is_depth:
-                cv2.imwrite(save_depth.format(ch, idx2), depth_image_2)
-            idx2 += 1
+            save_images(ch, idx2, color_image_2, depth_image_2)
             print('Save camera-2 frame:{}'.format(idx2))
+            idx2 += 1
         elif ch == ord('3') and is_camera_3:
-            cv2.imwrite(save_image.format(3, idx3), color_image_3)
-            if is_depth:
-                cv2.imwrite(save_depth.format(ch, idx3), depth_image_3)
-            idx3 += 1
+            save_images(ch, idx3, color_image_3, depth_image_3)
             print('Save camera-3 frame:{}'.format(idx3))
+            idx3 += 1
         elif ch == ord('s'):
             if is_camera_1:
-                cv2.imwrite(save_image.format(1, idx1), color_image_1)
-                if is_depth:
-                    cv2.imwrite(save_depth.format(ch, idx1), depth_colormap_1)
+                save_images(ch, idx1, color_image_1, depth_image_1)
                 idx1 += 1
             if is_camera_2:
-                cv2.imwrite(save_image.format(2, idx2), color_image_2)
-                if is_depth:
-                    cv2.imwrite(save_depth.format(ch, idx2), depth_image_2)
+                save_images(ch, idx2, color_image_2, depth_image_2)
                 idx2 += 1
             if is_camera_3:
-                cv2.imwrite(save_image.format(3, idx3), color_image_3)
-                if is_depth:
-                    cv2.imwrite(save_depth.format(ch, idx3), depth_image_3)
+                save_images(ch, idx3, color_image_3, depth_image_3)
                 idx3 += 1
             print('Save all cameras')
         elif ch == 27:
