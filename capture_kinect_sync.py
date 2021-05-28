@@ -54,7 +54,7 @@ try:
         rgb, depth = frames[FrameType.Color], frames[FrameType.Depth]
 
         rgb = cv2.flip(rgb.to_array(), 1)
-        depth = depth.to_array()
+        depth = cv2.flip(depth.to_array(), 1)
 
         if not is_depth:
             depth = None
