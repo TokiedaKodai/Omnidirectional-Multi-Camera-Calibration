@@ -97,18 +97,18 @@ def main():
     rotation_vectors = param2str2(rotation_vectors)
     translation_vectors = param2str2(translation_vectors)
 
-    result_str = '''\
+    result_str = f'''\
 ret:
 {ret}
 camera matrix:
-{cam}
+{camera_matrix}
 distortion:
-{dist}
+{distortion_coefficients}
 rotation:
-{rot}
+{rotation_vectors}
 translation:
-{trans}
-'''.format(ret=ret, cam=camera_matrix, dist=distortion_coefficients, rot=rotation_vectors, trans=translation_vectors)
+{translation_vectors}
+'''
     print(result_str)
 
     f = open(dir_calib+'calib.txt', 'w')

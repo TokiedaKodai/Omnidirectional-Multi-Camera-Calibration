@@ -4,13 +4,15 @@
     // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": []
+            "stopOnEntry": true,
+            "args": ["C:\Users\Kodai Tokieda\Desktop\drone-project\captures\210528\210528-kinect\cam-23"]
         }
     ]
 }
