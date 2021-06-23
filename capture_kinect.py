@@ -83,5 +83,10 @@ try:
         elif ch == 27:
             break
 
+        color = device.color_camera_params
+        ir = device.ir_camera_params
+
 finally:
     device.stop()
+    print(f'color\nfx:{color.fx}\nfy:{color.fy}\ncx:{color.cx}\ncy:{color.cy}')
+    print(f'ir\nfx:{ir.fx}\nfy:{ir.fy}\ncx:{ir.cx}\ncy:{ir.cy}\nk1:{ir.k1}\nk2:{ir.k2}\nk3:{ir.k3}\np1:{ir.p1}\np2:{ir.p2}')
