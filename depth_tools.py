@@ -54,14 +54,13 @@ def convert_depth_to_coords(raw_depth, cam_params):
 
 def convert_depth_to_coords_no_pix_size(raw_depth, cam_params):
     h, w = raw_depth.shape[:2]
-    pix_x, pix_y = 2/w, 2/h
 
     # convert depth to 3d coord
     xs, ys = np.meshgrid(range(w), range(h))
 
     z = raw_depth
-    x = z * (xs - cam_params['center_x']) * pix_x / cam_params['focal_length']
-    y = z * (ys - cam_params['center_y']) * pix_y / cam_params['focal_length']
+    x = (xs - cam_params['center_x']) * z / cam_params['focal_length']
+    y = -(ys - cam_params['center_y']) * z / cam_params['focal_length']
     xyz = np.vstack([x.flatten(), y.flatten(), -z.flatten()]).T.reshape((h, w, -1))
     return xyz
 

@@ -13,19 +13,9 @@ def getNewFile(file_path):
     return new_file_path
 
 cam_params = {
-    'focal_length': 0.03648738098144531,
-    # 'pix_x': 1.25e-05,
-    # 'pix_y': ,
+    'focal_length': 364.8738098144531, # [pixel]
     'center_x': 259.96539306640625,
     'center_y': 212.30979919433594
-}
-
-cam_params = {
-    'focal_length': 0.037009,
-    'pix_x': 1.25e-05,
-    'pix_y': 1.2381443057539635e-05,
-    'center_x': 790.902,
-    'center_y': 600.635
 }
 
 parser = argparse.ArgumentParser()
@@ -41,7 +31,6 @@ read_files = sorted(glob.glob(dire + '/*.bmp'))
 
 for file in read_files:
     img = cv2.imread(file, -1)
-    depth = tool.unpack_bmp_bgra_to_float(img) / 1000
+    depth = tool.unpack_bmp_bgra_to_float(img) / 1000 # mm -> m
     xyz = tool.convert_depth_to_coords_no_pix_size(depth, cam_params)
-    # xyz = tool.convert_depth_to_coords(depth, cam_params)
     tool.dump_ply(getNewFile(file), xyz.reshape(-1, 3).tolist())
