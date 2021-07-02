@@ -18,6 +18,7 @@ def editPlyScale(read_file, save_file):
     f = open(save_file, 'w')
     is_header = True
 
+    cnt = 0
     for line in open(read_file, 'r'):
         if is_header:
             write = line
@@ -25,13 +26,18 @@ def editPlyScale(read_file, save_file):
                 is_header = False
         else:
             vals = line.split()
-            vals[0] = float(vals[0]) * 1000
-            vals[1] = float(vals[1]) * 1000
-            vals[2] = float(vals[2]) * 1000
-            # vals[0] = float(vals[0]) / 1000
-            # vals[1] = float(vals[1]) / 1000
-            # vals[2] = float(vals[2]) / 1000
-            write = '{} {} {} {} {} {}\n'.format(*vals)
+            if len(vals) == 3:
+                if cnt % 2 == 0:
+                    vals[0] = float(vals[0]) * 1000
+                    vals[1] = float(vals[1]) * 1000
+                    vals[2] = float(vals[2]) * 1000
+                    # vals[0] = float(vals[0]) / 1000
+                    # vals[1] = float(vals[1]) / 1000
+                    # vals[2] = float(vals[2]) / 1000
+                cnt += 1
+                write = '{} {} {}\n'.format(*vals)
+            else:
+                write = '{} {} {} {}\n'.format(*vals)
         f.write(write)
     f.close()
 

@@ -64,7 +64,6 @@ try:
         cv2.imshow('Kinect', rgb)
         cv2.waitKey(1)
 
-	    # Save images and depth maps from selected camera by pressing camera number
         ch = cv2.waitKey(25)
         if ch == ord('s'):
             break

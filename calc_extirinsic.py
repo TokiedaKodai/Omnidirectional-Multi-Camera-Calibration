@@ -42,8 +42,10 @@ device2 = devices[1][1]
 rt12 = np.dot(rt2, rt1)
 print(f'New extrinsic param: {device1} -> {device2}\n{rt12}')
 
-f = open(getNewFile(file_name), 'w')
-f.write(f'{device1}->{device2}\nRT:\n')
+# f = open(getNewFile(file_name), 'w')
+f = open(file_name, 'a')
+
+f.write(f'\n\n{device1}->{device2}\nRT:\n')
 for line in rt12:
     f.write('{} {} {} {}\n'.format(*line))
 f.close()
