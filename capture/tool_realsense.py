@@ -1,4 +1,10 @@
+import os
+import sys
 import usb
+
+dir_current = os.path.dirname(os.path.abspath(__file__))
+os.chdir(dir_current)
+sys.path.append('../')
 
 import config as cf
 

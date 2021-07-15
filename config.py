@@ -1,3 +1,15 @@
+#### Data
+dir_save = '../Captures/'
+dir_realsense = 'realsense/'
+dir_kinect = 'kinect/'
+dir_calib = 'calib/'
+dir_detect_marker = 'detect/'
+dir_undist = 'undist/'
+
+save_image = 'rgb_{}-{}.png'
+save_depth = 'depth_{}-{}.bmp'
+save_ply = 'ply_{}-{}.ply'
+
 #### RealSense Config
 ID_VENDOR_REALSENSE = 0x8086 # Intel
 MANUFACTURER_REALSENSE = 'Intel(R) RealSense(TM)'
@@ -10,6 +22,12 @@ CAPTURE_FPS = 30
 CAMERA_1 = '816612061596'
 CAMERA_2 = '821212060533'
 CAMERA_3 = '816612061727'
+
+#### Kinect config
+RGB_WIDTH = 1920
+RGB_HEIGHT = 1080
+DEPTH_WIDTH = 512
+DEPTH_HEIGHT = 424
 
 #### Calibration
 num_marker_x = 10
@@ -30,15 +48,3 @@ capture_stereo = {
         'cams': [3, 1]}
 }
 num_capture = 10
-
-#### Data
-dir_save = '../captures/'
-dir_realsense = 'realsense/'
-dir_kinect = 'kinect/'
-dir_calib = 'calib/'
-dir_detect_marker = 'detect/'
-dir_undist = 'undist/'
-
-save_image = 'image_{}-{}.png'
-save_depth = 'depth_{}-{}.bmp'
-save_ply = 'ply_{}-{}.ply'

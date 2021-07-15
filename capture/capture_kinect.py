@@ -1,46 +1,45 @@
-import cv2
-import numpy as np
 import os
+import sys
 import argparse
 
 from freenect2 import Device, FrameType
+import numpy as np
+import cv2
+
+dir_current = os.path.dirname(os.path.abspath(__file__))
+os.chdir(dir_current)
+sys.path.append('../')
 
 import config as cf
-import depth_tools as dt
+from utils import depth_tools as tool
+
+os.chdir(dir_current)
+###########################################################################################
 
 # Parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--name', help='name of save dir (optional)')
-parser.add_argument('--depth', action='store_true', help='add to save depth image')
+parser.add_argument('name', help='name of save dir')
+parser.add_argument('cam', type=int, help='camera number')
+parser.add_argument('idx', type=int, help='capture index')
 args = parser.parse_args()
 
-dir_name = args.name
-is_depth = args.depth
-
-# Save dir
-dir_save = cf.dir_save
-dir_name = args.name
-if not dir_name is None:
-    dir_save += dir_name + '/'
-save_image = dir_save + cf.save_image
-save_depth = dir_save + cf.save_depth
+cam = args.cam
+idx = args.idx
+dir_save = cf.dir_save + args.name + '/' + cf.dir_realsense
 os.makedirs(dir_save, exist_ok=True)
 
-def save_images(cam, idx, rgb, depth=None):
-    cv2.imwrite(save_image.format(cam, idx), rgb)
-    if depth is not None:
-        depth_image = dt.pack_float_to_bmp_bgra(depth)
-        cv2.imwrite(save_depth.format(cam, idx), depth_image)
+file_ply = dir_save + cf.save_ply
+file_img = dir_save + cf.save_image
+file_depth = dir_save + cf.save_depth
 
-# Capture index
-idx1 = 0
-idx2 = 0
-idx3 = 0
+def save_images(cam, idx, rgb, depth=None):
+    cv2.imwrite(file_img.format(cam, idx), rgb)
+    depth_image = tool.pack_float_to_bmp_bgra(depth)
+    cv2.imwrite(file_depth.format(cam, idx), depth_image)
+
 
 # Get Kinect
 device = Device()
-
-depth = None
 
 try:
     while True:
@@ -55,32 +54,19 @@ try:
 
         rgb = cv2.flip(rgb.to_array(), 1)
         depth = cv2.flip(depth.to_array(), 1)
+        depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth, alpha=0.5), cv2.COLORMAP_JET)
 
-	    # Stack all images horizontally
-        list_stack = [rgb]
-        # if is_depth:
-        #     list_stack.append([depth, depth, depth])
-        images = np.hstack(list_stack)
-	    # Show images from both cameras
+        window = np.zeros((cf.RGB_HEIGHT, cf.RGB_WIDTH + cf.DEPTH_WIDTH))
+        window[:, :cf.RGB_WIDTH] = rgb
+        h_start = (cf.RGB_HEIGHT - cf.DEPTH_HEIGHT)//2
+        window[h_start:h_start + cf.DEPTH_HEIGHT, cf.RGB_WIDTH:] = depth_colormap
+
         cv2.namedWindow('Kinect', cv2.WINDOW_NORMAL)
-        cv2.imshow('Kinect', images)
+        cv2.imshow('Kinect', window)
         cv2.waitKey(1)
 
-	    # Save images and depth maps from selected camera by pressing camera number
         ch = cv2.waitKey(25)
-        if ch == ord('1'):
-            save_images(1, idx1, rgb, depth)
-            idx1 += 1
-            print('Save camera-1 frame:{}'.format(idx1))
-        elif ch == ord('2'):
-            save_images(2, idx2, rgb, depth)
-            idx2 += 1
-            print('Save camera-2 frame:{}'.format(idx2))
-        elif ch == ord('3'):
-            save_images(3, idx3, rgb, depth)
-            idx3 += 1
-            print('Save camera-3 frame:{}'.format(idx3))
-        elif ch == 27:
+        if ch == ord('s'):
             break
 
         color = device.color_camera_params
@@ -90,3 +76,16 @@ finally:
     device.stop()
     print(f'color\nfx:{color.fx}\nfy:{color.fy}\ncx:{color.cx}\ncy:{color.cy}')
     print(f'ir\nfx:{ir.fx}\nfy:{ir.fy}\ncx:{ir.cx}\ncy:{ir.cy}\nk1:{ir.k1}\nk2:{ir.k2}\nk3:{ir.k3}\np1:{ir.p1}\np2:{ir.p2}')
+
+    cam_params = {
+        'focal_length': float(ir.fx), # [pixel]
+        'center_x': float(ir.cx),
+        'center_y': float(ir.cy)
+    }
+
+    # depth /= 1000 # mm -> m
+
+    xyz = tool.convert_depth_to_coords_no_pix_size(depth, cam_params)
+    tool.dump_ply(file_ply.format(idx), xyz.reshape(-1, 3).tolist())
+
+    save_images(ch, idx, rgb, depth)

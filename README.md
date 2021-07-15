@@ -5,6 +5,7 @@ Calibration method of Omnidirectional Multi-camera whose scene has no overlap.
 Environment : Ubuntu
 
 Requirements
+- pyrealsense2
 - pyfreenect2
 - numpy
 - scipy
