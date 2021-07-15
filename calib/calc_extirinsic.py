@@ -1,6 +1,5 @@
 import os
 import sys
-import glob
 import argparse
 
 import numpy as np
@@ -11,7 +10,6 @@ os.chdir(dir_current)
 sys.path.append('../')
 
 import config as cf
-from utils import file_tools as tool
 
 os.chdir(dir_current)
 ###########################################################################################
@@ -21,8 +19,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('name', help='name of save dir')
 args = parser.parse_args()
 
-cam = args.cam
-idx = args.idx
 dir_save = cf.dir_save + args.name + '/'
 
 for dic in cf.dic_cams:

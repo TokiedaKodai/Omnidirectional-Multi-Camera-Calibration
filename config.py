@@ -19,9 +19,9 @@ CAPTURE_WIDTH = 640
 CAPTURE_HEIGHT = 480
 CAPTURE_FPS = 30
 
-CAMERA_1 = '816612061596'
+CAMERA_1 = '816612061727'
 CAMERA_2 = '821212060533'
-CAMERA_3 = '816612061727'
+CAMERA_3 = '816612061596'
 
 #### Kinect config
 RGB_WIDTH = 1920
@@ -36,12 +36,12 @@ dic_cams = [
         'cams': [1, 2]
         },
     {
-        'dir': 'cam13/',
-        'cams': [1, 3]
+        'dir': 'cam23/',
+        'cams': [2, 3]
         },
     {
-        'dir': 'cap3/',
-        'cams': [2, 3]
+        'dir': 'cap31/',
+        'cams': [3, 1]
         }
 ]
 template_param = '''

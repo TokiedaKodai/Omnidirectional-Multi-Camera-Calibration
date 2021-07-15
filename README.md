@@ -67,7 +67,7 @@ Calibration using PLY file by MeshLab.
 ## Tutorial
 ### Folder
 In all capturing and calibration sessions, you shold use same folder name to save.
-If you have 3 cameras to calibrate, sub-folder name shold be 'cam12', 'cam13', and 'cam23'.
+If you have 3 cameras to calibrate, sub-folder name shold be 'cam12', 'cam23', and 'cam31'.
 Example of folder name is '210715'.
 ```
 Captures/
@@ -75,10 +75,10 @@ Captures/
       ├ cam12/
       |   ├ realsense/
       |   └ kinect/
-      ├ cam13/
+      ├ cam23/
       |   ├ realsense/
       |   └ kinect/
-      └ cam23/
+      └ cam31/
           ├ realsense/
           └ kinect/
 ```
@@ -109,15 +109,15 @@ python capture_realsense.py 210715/cam12 2
 python capture_kinect.py 210715/cam12 2
 ```
 
-Capture by RealSense 1 and 3, and Kinect.
+Capture by RealSense 2 and 3, and Kinect.
 ```
-python capture_realsense.py 210715/cam13 1
-python capture_kinect.py 210715/cam13 1
-python capture_realsense.py 210715/cam13 3
-python capture_kinect.py 210715/cam13 3
+python capture_realsense.py 210715/cam23 2
+python capture_kinect.py 210715/cam23 2
+python capture_realsense.py 210715/cam23 3
+python capture_kinect.py 210715/cam23 3
 ```
 
-Capture by RealSense 2 and 3, and Kinect.
+Capture by RealSense 3 and 1, and Kinect.
 
 
 ### Extrinsic Parameters between RealSense and Kinect
