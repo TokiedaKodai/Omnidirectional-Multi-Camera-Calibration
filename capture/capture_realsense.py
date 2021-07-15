@@ -20,7 +20,7 @@ os.chdir(dir_current)
 parser = argparse.ArgumentParser()
 parser.add_argument('name', help='name of save dir')
 parser.add_argument('cam', type=int, help='camera number')
-parser.add_argument('idx', type=int, help='capture index')
+parser.add_argument('--idx', type=int, default=0, help='capture index')
 args = parser.parse_args()
 
 cam = args.cam

@@ -1,54 +1,50 @@
+import os
+import sys
+import glob
+import argparse
+
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-import sys
 
-def getNewFile(file_path):
-    file_hierarchy = file_path.rsplit('\\', 1)
-    file_name = file_hierarchy[-1]
-    new_name = 'new_extrinsic_param.txt'
-    save_file = '\\'.join([file_hierarchy[0], new_name])
-    return save_file
+dir_current = os.path.dirname(os.path.abspath(__file__))
+os.chdir(dir_current)
+sys.path.append('../')
 
-file_name = sys.argv[1]
+import config as cf
+from utils import file_tools as tool
 
-devices = []
-rt = []
-cnt = 0
-is_param = False
+os.chdir(dir_current)
+###########################################################################################
 
-for line in open(file_name, 'r'):
-    line = line.rstrip('\n')
-    device = line.split('->')
-    if len(device) == 2:
-        devices.append(device)
-    if cnt == 4:
-        is_param = False
-        cnt = 0
-    elif line == 'RT:':
-        is_param = True
-    elif is_param:
-        rt.append(line.split())
-        cnt += 1
-print(devices)
-if devices[0][1] != devices[1][0]:
-    raise Exception('ERROR: order of extrinsic params is NOT correct!')
+# Parser
+parser = argparse.ArgumentParser()
+parser.add_argument('name', help='name of save dir')
+args = parser.parse_args()
 
+cam = args.cam
+idx = args.idx
+dir_save = cf.dir_save + args.name + '/'
 
-rt1 = np.array(rt[:4], dtype=float)
-rt2 = np.array(rt[4:], dtype=float)
+for dic in cf.dic_cams:
+    directory = dir_save + dic['dir']
 
-device1 = devices[0][0]
-device2 = devices[1][1]
-rt12 = np.dot(rt2, rt1)
-print(f'New extrinsic param: {device1} -> {device2}\n{rt12}')
+    rt = []
+    for i in range(2):
+        for line in open(directory + cf.save_param.format('r' + dic['cams'][i], 'k'), 'r'):
+            rt.append(line.split())
 
-# f = open(getNewFile(file_name), 'w')
-f = open(file_name, 'a')
+    rt1 = np.array(rt[:4], dtype=float)
+    rt2 = np.array(rt[4:], dtype=float)
 
-f.write(f'\n\n{device1}->{device2}\nRT:\n')
-for line in rt12:
-    f.write('{} {} {} {}\n'.format(*line))
-f.close()
+    r2 = np.linalg.inv(rt2[:3, :3])
+    t2 = rt2[:3, 3] * -1
 
-r = R.from_matrix(rt12[:3, :3])
-print('Rotate [xyz]:', r.as_euler('xyz', degrees=True))
+    rt12 = np.dot(rt2, rt1)
+    print('extrinsic param: {} -> {}\n{}'.format(*dic['cams'], rt12))
+
+    with open(directory + cf.save_param.format('r' + dic['cams'][0], 'r' + dic['cams'][1]), 'w') as f:
+        for line in rt12:
+            f.write('{} {} {} {}\n'.format(*line))
+
+        r = R.from_matrix(rt12[:3, :3])
+        print('Rotate [xyz]:', r.as_euler('xyz', degrees=True))
