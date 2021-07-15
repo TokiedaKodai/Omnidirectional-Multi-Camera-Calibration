@@ -1,5 +1,8 @@
 # Ignore folders which saves data, model, and outputs
 charuco/
+jupyter/
+Captures/
+tmp/
 .vscode
 
 ############################################################
