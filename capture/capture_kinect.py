@@ -25,7 +25,7 @@ args = parser.parse_args()
 
 cam = args.cam
 idx = args.idx
-dir_save = cf.dir_save + args.name + '/' + cf.dir_realsense
+dir_save = cf.dir_save + args.name + '/' + cf.dir_kinect
 os.makedirs(dir_save, exist_ok=True)
 
 file_ply = dir_save + cf.save_ply
