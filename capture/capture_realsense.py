@@ -84,13 +84,14 @@ try:
         ch = cv2.waitKey(25)
         if ch == ord('s'):
             print('Save')
-            save_images(ch, idx, color_image, depth_image)
+            save_images(cam, idx, color_image, depth_image)
             ply = rs.save_to_ply(file_ply.format(cam, idx))
             ply.set_option(rs.save_to_ply.option_ply_binary, False)
             ply.set_option(rs.save_to_ply.option_ply_normals, False)
             print('Saving to ply...')
             ply.process(colorized)
             print('Done')
+            break
         elif ch == 27:
             break
 
