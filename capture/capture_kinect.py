@@ -56,10 +56,10 @@ try:
         depth = cv2.flip(depth.to_array(), 1)
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth, alpha=0.5), cv2.COLORMAP_JET)
 
-        window = np.zeros((cf.RGB_HEIGHT, cf.RGB_WIDTH + cf.DEPTH_WIDTH))
-        window[:, :cf.RGB_WIDTH] = rgb
+        window = np.zeros((cf.RGB_HEIGHT, cf.RGB_WIDTH + cf.DEPTH_WIDTH, 3), dtype='uint8')
+        window[:, :cf.RGB_WIDTH, :] = np.array(rgb[:, :, :3], dtype='uint8')
         h_start = (cf.RGB_HEIGHT - cf.DEPTH_HEIGHT)//2
-        window[h_start:h_start + cf.DEPTH_HEIGHT, cf.RGB_WIDTH:] = depth_colormap
+        window[h_start:h_start + cf.DEPTH_HEIGHT, cf.RGB_WIDTH:, :3] = np.array(depth_colormap, dtype='uint8')
 
         cv2.namedWindow('Kinect', cv2.WINDOW_NORMAL)
         cv2.imshow('Kinect', window)
@@ -86,6 +86,6 @@ finally:
     # depth /= 1000 # mm -> m
 
     xyz = tool.convert_depth_to_coords_no_pix_size(depth, cam_params)
-    tool.dump_ply(file_ply.format(idx), xyz.reshape(-1, 3).tolist())
+    tool.dump_ply(file_ply.format(cam, idx), xyz.reshape(-1, 3).tolist())
 
-    save_images(ch, idx, rgb, depth)
+    save_images(cam, idx, rgb, depth)
