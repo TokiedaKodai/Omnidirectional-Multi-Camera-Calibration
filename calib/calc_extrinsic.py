@@ -26,7 +26,7 @@ for dic in cf.dic_cams:
 
     rt = []
     for i in range(2):
-        for line in open(directory + cf.save_param.format('r' + dic['cams'][i], 'k'), 'r'):
+        for line in open(directory + cf.save_param.format('r' + str(dic['cams'][i]), 'k'), 'r'):
             rt.append(line.split())
 
     rt1 = np.array(rt[:4], dtype=float)
@@ -34,11 +34,13 @@ for dic in cf.dic_cams:
 
     r2 = np.linalg.inv(rt2[:3, :3])
     t2 = rt2[:3, 3] * -1
+    rt2[:3, :3] = r2
+    rt2[:3, 3] = t2
 
     rt12 = np.dot(rt2, rt1)
     print('extrinsic param: {} -> {}\n{}'.format(*dic['cams'], rt12))
 
-    with open(directory + cf.save_param.format('r' + dic['cams'][0], 'r' + dic['cams'][1]), 'w') as f:
+    with open(directory + cf.save_param.format('r' + str(dic['cams'][0]), 'r' + str(dic['cams'][1])), 'w') as f:
         for line in rt12:
             f.write('{} {} {} {}\n'.format(*line))
 

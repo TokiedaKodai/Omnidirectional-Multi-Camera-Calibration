@@ -121,11 +121,32 @@ Capture by RealSense 3 and 1, and Kinect.
 
 
 ### Extrinsic Parameters between RealSense and Kinect
+Change directory.
+```
+cd ../calib
+```
+
 Since the PLY file of RealSense is saved in metric units and the PLY file of Kinect is saved in millimeters, convert the file of RealSense to millimeters.
 ```
 python edit_ply_realsense.py 210715
 ```
 
+Load PLY files in MeshLab.
+Calcurate RT (Realsense to Kinect).
+
+For example.
+Capture/210715/cam12/
+
+```
+cam12/
+  ├ kinect/
+  ├ realsense/
+  ├ param_r1-k.txt
+  └ param_r2-k.txt
+```
+
+Calcurate RT (RealSense 1 to Kinect).
+Load kinect/ply_1-0.ply and realsense/ply_1-0_[mm].ply .
 
 
 ### Extrinsic Parameters between RealSense and RealSense

@@ -18,8 +18,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('name', help='name of save dir')
 args = parser.parse_args()
 
-cam = args.cam
-idx = args.idx
 dir_save = cf.dir_save + args.name + '/'
 
 

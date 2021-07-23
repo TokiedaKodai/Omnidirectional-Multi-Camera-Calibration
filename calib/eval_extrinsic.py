@@ -28,9 +28,9 @@ rts = []
 for dic in cf.dic_cams:
     directory = dir_save + dic['dir']
 
-    f.write('{}->{}'.format(*dic['cams']))
+    f.write('{}->{}\n'.format(*dic['cams']))
     rt = []
-    for line in open(directory + cf.save_param.format('r' + dic['cams'][0], 'r' + dic['cams'][1]), 'r'):
+    for line in open(directory + cf.save_param.format('r' + str(dic['cams'][0]), 'r' + str(dic['cams'][1])), 'r'):
         f.write(line)
         rt.append(line.split())
     rts.append(np.array(rt, dtype=float))

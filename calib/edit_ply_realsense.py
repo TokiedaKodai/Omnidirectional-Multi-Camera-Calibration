@@ -18,8 +18,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('name', help='name of save dir')
 args = parser.parse_args()
 
-cam = args.cam
-idx = args.idx
 dir_save = cf.dir_save + args.name + '/'
 
 
@@ -33,7 +31,7 @@ def main():
             tool.editPlyScale(read_file, save_file, 1000)
 
         for i in range(2):
-            with open(directory + cf.save_param.format('r' + dic['cams'][i], 'k'), 'w') as f:
+            with open(directory + cf.save_param.format('r' + str(dic['cams'][i]), 'k'), 'w') as f:
                 f.write(cf.template_param)
 
 
