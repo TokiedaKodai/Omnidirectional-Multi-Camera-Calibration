@@ -58,7 +58,7 @@ trans_err = rt1231[0:3,3]
 trans_err_total = np.sqrt(np.sum(np.square(trans_err)))
 
 print('Rotation(xyz)[degrees]: {} {} {}'.format(*angle_err))
-print('Rotation(Total)[degrees]: {}'.format(angle_err))
+print('Rotation(Total)[degrees]: {}'.format(angle_err_total))
 print('Translation(xyz)[m]: {} {} {}'.format(*trans_err))
 print('Translation(Total)[m]: {}'.format(trans_err_total))
 

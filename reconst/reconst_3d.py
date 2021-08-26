@@ -33,7 +33,9 @@ for dic in cf.dic_cams:
     directory = dir_save + dic['dir']
 
     rt = []
-    for line in open(directory + cf.save_param.format('r' + dic['cams'][0], 'r' + dic['cams'][1]), 'r'):
+    file_param = directory + cf.save_param.format('r' + str(dic['cams'][0]), 'r' + str(dic['cams'][1]))
+    print(file_param)
+    for line in open(file_param, 'r'):
         rt.append(line.split())
     rts.append(np.array(rt, dtype=float))
 
@@ -50,15 +52,14 @@ t31 = rt31[:3, 3]
 r21 = np.linalg.inv(r12)
 t21 = t12 * -1
 
+dir_name = '../Captures/210722/realsense/'
+file_1 = dir_name + 'depth_1-0.bmp'
+file_2 = dir_name + 'depth_2-0.bmp'
+file_3 = dir_name + 'depth_3-0.bmp'
 
-dir_0 = '../experiments/20210702T140403.448/image_00/depth/'
-dir_1 = '../experiments/20210702T140403.448/image_01/depth/'
-dir_2 = '../experiments/20210702T140403.448/image_02/depth/'
-filename = '000000.png'
-
-depth_2 = cv2.imread(dir_0 + filename, -1)
-depth_1 = cv2.imread(dir_1 + filename, -1)
-depth_3 = cv2.imread(dir_2 + filename, -1)
+depth_1 = tool.unpack_bmp_bgra_to_float(cv2.imread(file_1, -1))
+depth_2 = tool.unpack_bmp_bgra_to_float(cv2.imread(file_2, -1))
+depth_3 = tool.unpack_bmp_bgra_to_float(cv2.imread(file_3, -1))
 depth_1 = depth_1 / 1000
 depth_2 = depth_2 / 1000
 depth_3 = depth_3 / 1000
@@ -81,4 +82,4 @@ for i in range(len(xyz_3)):
     new_xyz_3.append(xyz)
 
 list_xyz = xyz_1 + new_xyz_2 + new_xyz_3
-tool.dump_ply(dir_save + '3d.ply', list_xyz)
+tool.dump_ply(dir_name + '3d.ply', list_xyz)
