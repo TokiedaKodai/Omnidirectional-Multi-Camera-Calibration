@@ -52,7 +52,7 @@ t31 = rt31[:3, 3]
 r21 = np.linalg.inv(r12)
 t21 = t12 * -1
 
-dir_name = '../Captures/210722/realsense/'
+dir_name = '../Captures/210901/cam123/realsense/'
 file_1 = dir_name + 'depth_1-0.bmp'
 file_2 = dir_name + 'depth_2-0.bmp'
 file_3 = dir_name + 'depth_3-0.bmp'
@@ -71,13 +71,15 @@ xyz_3 = tool.convert_depth_to_coords_no_pix_size(depth_3, cam_params).reshape(-1
 new_xyz_2 = []
 for i in range(len(xyz_2)):
     xyz = np.array(xyz_2[i])
-    xyz = np.dot(xyz, r21)
+    # xyz = np.dot(xyz, r21)
+    xyz = np.dot(r21, xyz)
     xyz += t21
     new_xyz_2.append(xyz)
 new_xyz_3 = []
 for i in range(len(xyz_3)):
     xyz = np.array(xyz_3[i])
-    xyz = np.dot(xyz, r31)
+    # xyz = np.dot(xyz, r31)
+    xyz = np.dot(r31, xyz)
     xyz += t31
     new_xyz_3.append(xyz)
 
